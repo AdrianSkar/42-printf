@@ -1,5 +1,13 @@
 # `ft_printf`
 
+![42 School](https://img.shields.io/badge/42-Madrid-000000?style=flat&logo=42&logoColor=white)
+![Score](https://img.shields.io/badge/Score-100%2F100-success)
+![Language](https://img.shields.io/badge/Language-C-blue)
+![Norminette](https://img.shields.io/badge/Norminette-passing-success)
+![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
+
+Printf reimplementation in C using dispatch tables with function pointers for clean format specifier handling.
+
 - [📔 Project overview](#-project-overview)
 - [📚 Concept guide](#-concept-guide)
 - [🔧 Struct array implementation](#-struct-array-implementation)
@@ -8,14 +16,6 @@
 - [📝 Notes](#-notes)
 - [🛠️ Compilation and usage](#️-compilation-and-usage)
 - [⚖️ License](#️-license)
-
-# ft_printf
-
-![42 School](https://img.shields.io/badge/42-Madrid-000000?style=flat&logo=42&logoColor=white)
-![Score](https://img.shields.io/badge/Score-100%2F100-success)
-![Language](https://img.shields.io/badge/Language-C-blue)
-![Norminette](https://img.shields.io/badge/Norminette-passing-success)
-![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
 
 ## 📔 Project overview
 
