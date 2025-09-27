@@ -7,7 +7,14 @@
 - [📝 Notes](#-notes)
 - [🛠️ Compilation and usage](#️-compilation-and-usage)
 - [⚖️ License](#️-license)
-  
+
+# ft_printf
+
+![42 School](https://img.shields.io/badge/42-Madrid-000000?style=flat&logo=42&logoColor=white)
+![Score](https://img.shields.io/badge/Score-100%2F100-success)
+![Language](https://img.shields.io/badge/Language-C-blue)
+![Norminette](https://img.shields.io/badge/Norminette-passing-success)
+![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
 ## 📔 Project overview
 
 - **Objective**: Implement a function, `ft_printf`, that recreates the behavior of the standard C library's `printf` function. The function must handle variadic arguments and format specifiers to produce formatted output.
