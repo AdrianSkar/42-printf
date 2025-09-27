@@ -8,6 +8,8 @@
 
 Printf reimplementation in C using dispatch tables with function pointers for clean format specifier handling.
 
+---
+
 - [📔 Project overview](#-project-overview)
 - [📚 Concept guide](#-concept-guide)
 - [🔧 Struct array implementation](#-struct-array-implementation)
