@@ -3,11 +3,20 @@
 - [📔 Project overview](#-project-overview)
 - [📚 Concept guide](#-concept-guide)
 - [🔧 Struct array implementation](#-struct-array-implementation)
+- [⚙️ Utility functions](#️-utility-functions)
 - [💡 Potential improvements](#-potential-improvements)
 - [📝 Notes](#-notes)
 - [🛠️ Compilation and usage](#️-compilation-and-usage)
 - [⚖️ License](#️-license)
-  
+
+# ft_printf
+
+![42 School](https://img.shields.io/badge/42-Madrid-000000?style=flat&logo=42&logoColor=white)
+![Score](https://img.shields.io/badge/Score-100%2F100-success)
+![Language](https://img.shields.io/badge/Language-C-blue)
+![Norminette](https://img.shields.io/badge/Norminette-passing-success)
+![License](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)
+
 ## 📔 Project overview
 
 - **Objective**: Implement a function, `ft_printf`, that recreates the behavior of the standard C library's `printf` function. The function must handle variadic arguments and format specifiers to produce formatted output.
@@ -34,20 +43,19 @@
 
 ## 📚 Concept guide
 
-1. **Variadic functions**: A variadic function can accept a variable number of arguments. The `stdarg.h` library provides macros (`va_start`, `va_arg`, `va_end`) to access these arguments sequentially.
-2. **Format string parsing**: The format string contains both literal characters and format specifiers (starting with `%`). Parsing involves iterating through the string and identifying when to print literal characters versus when to process format specifiers.
-3. **Function pointers**: Instead of using lengthy if/else chains, function pointers allow for cleaner code by creating a dispatch table that maps format specifiers to their corresponding handler functions.
-4. **Type promotion in variadic functions**: When passed to variadic functions, `char` and `short` are promoted to `int`, and `float` is promoted to `double`. This affects how arguments are retrieved with `va_arg`.
-5. **Base conversion algorithms**: Converting numbers to different bases (decimal, hexadecimal) requires understanding positional notation and character mapping.
-6. **Memory safety**: Proper handling of NULL pointers, invalid format specifiers, and write system call failures.
-7. **Direct output approach**: Unlike the standard `printf` which uses internal buffering, this implementation writes directly to the file descriptor for simplicity.
-8. **Edge case handling**: Managing scenarios like NULL string pointers, NULL address pointers, negative numbers, and malformed format strings.
+1. **Variadic functions**: Handle variable numbers of arguments using `stdarg.h` macros (`va_start`, `va_arg`, `va_end`).
+2. **Dispatch tables**: Use function pointers instead of if/else chains for cleaner, more maintainable code.
+3. **Format string parsing**: Iterate through format strings, distinguishing literal characters from `%` specifiers.
+4. **Type promotion**: Handle automatic promotion of `char`/`short` to `int` in variadic functions.
+5. **Base conversion**: Convert numbers between decimal and hexadecimal representations.
+6. **Memory safety**: Robust handling of NULL pointers and edge cases.
+7. **Direct output**: Write directly to file descriptors without internal buffering.
 
 ## 🔧 Struct array implementation
 
-This project was implemented using a struct array (dispatch table) to handle format specifiers instead of the conventional if/else chain approach. The struct array implementation not only provides cleaner, more maintainable code but also offers better performance through direct function pointer lookup and makes the code easily extensible for additional format specifiers.
+This project uses a **dispatch table** approach with function pointers instead of traditional if/else chains. This provides cleaner, more maintainable code and better performance through direct function pointer lookup.
 
-### Struct array structure
+### Dispatch table structure
 
 ```c
 typedef struct s_format
@@ -56,11 +64,9 @@ typedef struct s_format
 	int		(*f)(va_list *args, const char selector);
 }			t_format;
 ```
-`selector`: The format specifier character (`c`, `s`, `p`, `d`, `i`, `u`, `x`, `X`, `%`).
-`f`: Function pointer to the handler function for this specific format specifier.
 
-### Main function
-The function parses the format string character by character. When a `%` is encountered, it looks up the next character in the dispatch table and calls the corresponding handler function.
+### Core algorithm
+The function parses the format string character by character. When a `%` is encountered, it looks up the next character in the dispatch table and calls the corresponding [handler function](#-utility-functions).
 ```c
 int	ft_printf(const char *format, ...)
 {
@@ -92,23 +98,6 @@ int	ft_printf(const char *format, ...)
 }
 ```
 
-### Dispatch table functions
-
-##### `int ft_sel_strs(va_list *args, const char selector);`
-Handles character (`%c`) and string (`%s`) format specifiers. Promotes chars to unsigned `char` as per `stdarg.h` specifications.
-
-##### `int ft_sel_ptr(va_list *args, const char selector);`
-Handles pointer (`%p`) format specifier. Converts memory addresses to hexadecimal representation with "0x" prefix, or prints "(nil)" for NULL pointers.
-
-##### `int ft_sel_nums(va_list *args, const char selector);`
-Handles signed decimal (`%d`, `%i`) and unsigned decimal (`%u`) format specifiers. Uses appropriate casting and base conversion functions.
-
-##### `int ft_sel_hexs(va_list *args, const char selector);`
-Handles hexadecimal format specifiers (`%x` for lowercase, `%X` for uppercase). Uses base conversion with appropriate character sets.
-
-##### `int ft_sel_percent(va_list *args, const char selector);`
-Handles the literal percent (`%%`) format specifier by simply printing a `%` character.
-
 ### Format specifier lookup
 The `ft_handle_specifier` function iterates through the dispatch table to find the matching format specifier:
 ```c
@@ -133,6 +122,35 @@ static int	ft_handle_specifier(const char format_char, va_list *args,
 	return (ret);
 }
 ```
+
+## ⚙️ Utility functions
+
+The project is organized into modular utility files for better code organization and maintainability:
+
+### Handler functions (format specifier processors)
+
+| Function | File | Format specifiers | Description |
+|----------|------|-------------------|-------------|
+| `ft_sel_strs` | `ft_arg_utils.c` | `%c`, `%s` | Handles character and string output. Promotes chars to unsigned char per stdarg.h specs |
+| `ft_sel_ptr` | `ft_arg_utils.c` | `%p` | Handles pointer addresses. Converts to hexadecimal with "0x" prefix or prints "(nil)" for NULL |
+| `ft_sel_nums` | `ft_arg_utils.c` | `%d`, `%i`, `%u` | Handles signed and unsigned decimal integers with appropriate type casting |
+| `ft_sel_hexs` | `ft_arg_utils.c` | `%x`, `%X` | Handles hexadecimal conversion (lowercase and uppercase) |
+| `ft_sel_percent` | `ft_arg_utils.c` | `%%` | Handles literal percent sign output |
+
+### Base conversion utilities
+
+| Function | File | Purpose |
+|----------|------|---------|
+| `ft_putnbr_base` | `ft_base_utils.c` | Converts numbers to specified base representation |
+| `ft_putunbr_base` | `ft_base_utils.c` | Converts unsigned numbers to specified base representation |
+| `ft_strlen` | `ft_base_utils.c` | Calculates string length for internal operations |
+
+### Core functionality
+
+| Function | File | Purpose |
+|----------|------|---------|
+| `ft_printf` | `ft_printf.c` | Main entry point. Parses format string and manages variadic arguments |
+| `ft_handle_specifier` | `ft_printf.c` | Dispatch table lookup and handler function invocation |
 
 ## 💡 Potential improvements
 
