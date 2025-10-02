@@ -68,7 +68,7 @@ typedef struct s_format
 ```
 
 ### Core algorithm
-The function parses the format string character by character. When a `%` is encountered, it looks up the next character in the dispatch table and calls the corresponding [handler function](#-utility-functions).
+The function parses the format string character by character. When a `%` is encountered, it looks up the next character in the dispatch table and calls the corresponding [handler function](#️-utility-functions).
 ```c
 int	ft_printf(const char *format, ...)
 {
@@ -156,7 +156,7 @@ The project is organized into modular utility files for better code organization
 
 ## 💡 Potential improvements
 
-- **Extended format specifier support**: The current struct array implementation could easily be extended to support additional format specifiers like `%f`, `%e`, `%g` for floating-point numbers, or field width and precision modifiers.
+- **Extended format specifier support**: The current struct array implementation could be extended to support additional format specifiers like `%f`, `%e`, `%g` for floating-point numbers, or field width and precision modifiers.
 
 - **Buffered output optimization**: While the current implementation uses direct `write` system calls for simplicity, implementing an internal buffer could reduce the number of system calls and improve performance for large outputs.
 
@@ -199,23 +199,14 @@ cc -Wall -Wextra -Werror ft_printf.c ft_arg_utils.c ft_base_utils.c main.c
 ./a.out
 ```
 
-The test file includes:
-- **Basic format specifiers**: Characters, strings, pointers, decimals, integers, unsigned, hexadecimal, and percent signs
-- **Edge cases**: NULL strings, NULL pointers, multibyte characters, negative values
+The test suite validates:
+- **Format specifiers**: Characters, strings, pointers, decimals, integers, unsigned, hexadecimal, and percent signs
+- **Edge cases**: NULL strings/pointers, multibyte characters, negative values
 - **Boundary conditions**: Maximum values, recursive pointers, long strings
 - **Return value validation**: Compares character count with standard `printf`
-- **Color-coded results**: Green for matching outputs, red for discrepancies
+- **Color-coded output**: Green for matching results, red for discrepancies
 
-### Test categories available
-
-The `main.c` file contains commented test sections that can be uncommented to test specific functionality:
-- Character and multibyte character handling
-- String operations including NULL and empty strings  
-- Pointer address formatting with various edge cases
-- Numeric conversions (decimal, integer, unsigned, hexadecimal)
-- Mixed format specifier combinations
-- Buffer and memory management with long strings
-- Invalid format specifier handling (requires compiler flags)
+Additional test cases are available as commented sections for extended testing.
 
 ## ⚖️ License
 
